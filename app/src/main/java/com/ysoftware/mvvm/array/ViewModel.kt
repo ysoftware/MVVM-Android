@@ -36,7 +36,7 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
 
     // Public methods for override
 
-    open fun fetchData(query: Q?, block: (List<M>, Error?) -> Unit) {
+    open fun fetchData(query: Q?, block: (Result<List<M>>) -> Unit) {
         throw Exception("override ArrayViewModel.fetchData(_:_:)")
     }
 
@@ -61,21 +61,19 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
             loadOperationsCount -= 1
         }
 
-        fetchData(query) { items, error ->
+        fetchData(query) { result ->
             loadOperationsCount -= 1
             if (loadOperationsCount != 0) {
                 return@fetchData
             }
 
-            if (error != null) {
+            result.onSuccess { items ->
+                val reachedEnd = query == null || !query!!.isPaginationEnabled || items.size < query!!.size
+                manageItems(items)
+                state = state.makeReady(reachedEnd)
+            }.onFailure { error ->
                 state = state.makeError(error)
-                return@fetchData
             }
-
-            val reachedEnd = query == null || !query!!.isPaginationEnabled || items.size < query!!.size
-
-            manageItems(items)
-            state = state.makeReady(reachedEnd)
         }
         query?.advance()
     }

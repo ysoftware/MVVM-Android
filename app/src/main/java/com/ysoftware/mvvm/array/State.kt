@@ -19,7 +19,7 @@ enum class State : Comparable<State> {
     // Methods
 
     var reachedEndValue: Boolean? = null
-    var errorValue: Error? = null
+    var errorValue: Throwable? = null
 
     fun makeReset(): State {
         return initial
@@ -32,24 +32,24 @@ enum class State : Comparable<State> {
     }
 
     fun makeLoading(): State {
-        if (this == initial) {
-            return loading
+        return if (this == initial) {
+            loading
         }
         else {
-            return loadingMore
+            loadingMore
         }
     }
 
-    fun makeError(error: Error): State {
-        if (this == loading) {
+    fun makeError(error: Throwable): State {
+        return if (this == loading) {
             val state = State.error
             state.errorValue = error
-            return state
+            state
         }
         else {
             val state = State.paginationError
             state.errorValue = error
-            return state
+            state
         }
     }
 }
