@@ -11,8 +11,8 @@ open class StringArrayViewModel(array:List<String>): SimpleArrayViewModel<String
         reloadData()
     }
 
-    override fun fetchData(block: (Result<List<String>>) -> Unit) {
-        block(Result.success(temp!!))
+    override fun fetchData(block: (Result<Collection<ViewModel<String>>>) -> Unit) {
+        block(Result.success(temp!!.map { ViewModel(it) }))
         temp = null
     }
 

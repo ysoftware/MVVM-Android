@@ -4,11 +4,11 @@ import com.ysoftware.mvvm.single.ViewModel
 
 open class SimpleArrayViewModel<M:Comparable<M>, VM:ViewModel<M>>: ArrayViewModel<M, VM, SimpleQuery>() {
 
-    final override fun fetchData(query: SimpleQuery?, block: (Result<List<M>>) -> Unit) {
+    final override fun fetchData(query: SimpleQuery?, block: (Result<Collection<VM>>) -> Unit) {
         fetchData(block)
     }
 
-    open fun fetchData(block: (Result<List<M>>) -> Unit) {
+    open fun fetchData(block: (Result<Collection<VM>>) -> Unit) {
         throw Exception("override ArrayViewModel.fetchData(_:)")
     }
 }

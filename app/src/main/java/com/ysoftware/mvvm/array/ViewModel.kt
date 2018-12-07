@@ -38,7 +38,7 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
 
     // Public methods for override
 
-    open fun fetchData(query: Q?, block: (Result<List<M>>) -> Unit) {
+    open fun fetchData(query: Q?, block: (Result<Collection<VM>>) -> Unit) {
         throw Exception("override ArrayViewModel.fetchData(_:_:)")
     }
 
@@ -89,7 +89,7 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
         manageItems(listOf())
     }
 
-    fun manageItems(newItems: List<M>) {
+    fun manageItems(newItems: Collection<VM>) {
         if (shouldClearData) {
             array = arrayListOf()
             shouldClearData = false
@@ -97,8 +97,7 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
         }
 
         val isFirstLoad = array.isEmpty()
-        @Suppress("UNCHECKED_CAST")
-        array.addAll(newItems.map { ViewModel.create(it) } as Collection<VM>)
+        array.addAll(newItems)
         array.forEach { it.arrayDelegate = this }
 
         if (isFirstLoad) {
