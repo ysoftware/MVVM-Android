@@ -11,7 +11,8 @@ open class ViewModel<M : Comparable<M>>(var model: M?) : Comparable<ViewModel<M>
     // Public properties
 
     var delegate: ViewModelDelegate? = null
-        set(_) {
+        set(value) {
+            field = value
             if (model != null) {
                 delegate?.didUpdateData(this)
             }
@@ -20,7 +21,8 @@ open class ViewModel<M : Comparable<M>>(var model: M?) : Comparable<ViewModel<M>
     // Inner properties
 
     internal var arrayDelegate: ViewModelDelegate? = null
-        set(_) {
+        set(value) {
+            field = value
             if (model != null) {
                 arrayDelegate?.didUpdateData(this)
             }

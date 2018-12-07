@@ -11,7 +11,8 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
     var query: Q? = null
 
     var delegate: ArrayViewModelDelegate? = null
-        set(_) {
+        set(value) {
+            field = value
             if (array.isNotEmpty()) {
                 delegate?.didChangeState(state)
                 delegate?.didUpdateData(this, Update.reload)
@@ -23,6 +24,7 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
 
     var state: State = State.initial
         private set(value) {
+            field = value
             delegate?.didChangeState(value)
         }
 
@@ -50,8 +52,7 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
         when (state) {
             State.loading, State.loadingMore -> return
             State.ready -> if (state.reachedEndValue!!) return
-            else -> {
-            }
+            else -> { }
         }
 
         state = state.makeLoading()
