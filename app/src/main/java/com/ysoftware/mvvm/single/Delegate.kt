@@ -2,6 +2,6 @@ package com.ysoftware.mvvm.single
 
 interface ViewModelDelegate {
 
-    fun <M:Comparable<M>> didUpdatedata(viewModel:ViewModel<M>) {}
+    fun <M:Comparable<M>> didUpdateData(viewModel:ViewModel<M>) {}
 }
 

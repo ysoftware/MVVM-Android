@@ -168,7 +168,7 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
 
     // Delegate
 
-    override fun <M : Comparable<M>> didUpdatedata(viewModel: ViewModel<M>) {
+    override fun <M : Comparable<M>> didUpdateData(viewModel: ViewModel<M>) {
         @Suppress("UNCHECKED_CAST") notifyUpdated(viewModel as VM)
     }
 }

@@ -13,7 +13,7 @@ open class ViewModel<M : Comparable<M>>(var model: M?) : Comparable<ViewModel<M>
     var delegate: ViewModelDelegate? = null
         set(_) {
             if (model != null) {
-                delegate?.didUpdatedata(this)
+                delegate?.didUpdateData(this)
             }
         }
 
@@ -22,15 +22,15 @@ open class ViewModel<M : Comparable<M>>(var model: M?) : Comparable<ViewModel<M>
     internal var arrayDelegate: ViewModelDelegate? = null
         set(_) {
             if (model != null) {
-                arrayDelegate?.didUpdatedata(this)
+                arrayDelegate?.didUpdateData(this)
             }
         }
 
     // Public methods
 
     fun notifyUpdated() {
-        delegate?.didUpdatedata(this)
-        arrayDelegate?.didUpdatedata(this)
+        delegate?.didUpdateData(this)
+        arrayDelegate?.didUpdateData(this)
     }
 
     override fun compareTo(other: ViewModel<M>): Int {
