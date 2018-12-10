@@ -30,6 +30,8 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
 
     val numberOfItems get() = array.size
 
+    val isEmpty:Boolean get() = array.size == 0
+
     // Private properties
 
     private var shouldClearData = false
