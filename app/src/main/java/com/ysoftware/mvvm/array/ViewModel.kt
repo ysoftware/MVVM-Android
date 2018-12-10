@@ -73,6 +73,7 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
                 manageItems(items)
                 state = state.makeReady(reachedEnd)
             }.onFailure { error ->
+                manageItems(arrayListOf())
                 state = state.makeError(error)
             }
         }
@@ -86,14 +87,21 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
 
     fun clearData() {
         resetData()
-        manageItems(listOf())
+        setData(arrayListOf())
     }
 
-    fun manageItems(newItems: Collection<VM>) {
+    // Private methods
+
+    private fun resetData() {
+        state = state.makeReset()
+        shouldClearData = true
+        query?.resetPosition()
+    }
+
+    private fun manageItems(newItems: Collection<VM>) {
         if (shouldClearData) {
             array = arrayListOf()
             shouldClearData = false
-            delegate?.didUpdateData(this, Update.reload)
         }
 
         val isFirstLoad = array.isEmpty()
@@ -114,15 +122,19 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
         }
     }
 
-    // Private methods
-
-    private fun resetData() {
-        state = state.makeReset()
-        shouldClearData = true
-        query?.resetPosition()
-    }
-
     // Operations
+
+    fun setData(data:List<VM>) {
+        query?.resetPosition()
+        shouldClearData = false
+
+        array.clear()
+        array.addAll(data)
+        data.forEach { it.arrayDelegate = this }
+
+        delegate?.didUpdateData(this, Update.reload)
+        state.makeReady(true)
+    }
 
     fun append(element: VM) {
         array.add(element)
@@ -169,6 +181,9 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
     // Delegate
 
     override fun <M : Comparable<M>> didUpdateData(viewModel: ViewModel<M>) {
-        @Suppress("UNCHECKED_CAST") notifyUpdated(viewModel as VM)
+        @Suppress("UNCHECKED_CAST")
+        (viewModel as? VM)?.let {
+            notifyUpdated(it)
+        }
     }
 }
