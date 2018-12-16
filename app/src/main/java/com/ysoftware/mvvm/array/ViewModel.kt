@@ -4,7 +4,7 @@ import com.ysoftware.mvvm.single.ViewModel
 import com.ysoftware.mvvm.single.ViewModelDelegate
 import java.lang.Math.min
 
-open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : ViewModelDelegate {
+open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : ViewModelDelegate, Collection<VM> {
 
     // Public properties
 
@@ -29,8 +29,6 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
         }
 
     val numberOfItems get() = array.size
-
-    val isEmpty:Boolean get() = array.size == 0
 
     // Private properties
 
@@ -188,4 +186,16 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
             notifyUpdated(it)
         }
     }
+
+    // Collection Conformance
+
+    override val size: Int get() = array.size
+
+    override fun contains(element: VM): Boolean = array.contains(element)
+
+    override fun containsAll(elements: Collection<VM>): Boolean = array.containsAll(elements)
+
+    override fun isEmpty(): Boolean = array.isEmpty()
+
+    override fun iterator(): Iterator<VM> = array.iterator()
 }
