@@ -132,8 +132,8 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
         array.addAll(data)
         data.forEach { it.arrayDelegate = this }
 
-        delegate?.didUpdateData(this, Update.reload)
         state.makeReady(true)
+        delegate?.didUpdateData(this, Update.reload)
     }
 
     fun append(element: VM) {
