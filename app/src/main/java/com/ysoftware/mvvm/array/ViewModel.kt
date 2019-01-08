@@ -76,8 +76,8 @@ open class ArrayViewModel<M : Comparable<M>, VM : ViewModel<M>, Q : Query> : Vie
                 manageItems(arrayListOf())
                 state = state.makeError(error)
             }
+            query?.advance()
         }
-        query?.advance()
     }
 
     fun reloadData() {

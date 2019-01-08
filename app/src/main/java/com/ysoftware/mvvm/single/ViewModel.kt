@@ -14,7 +14,7 @@ open class ViewModel<M : Comparable<M>>(var model: M?) : Comparable<ViewModel<M>
 
     // Inner properties
 
-    internal var arrayDelegate: ViewModelDelegate? = null
+    var arrayDelegate: ViewModelDelegate? = null
         set(value) {
             field = value
             if (model != null) {
